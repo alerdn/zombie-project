@@ -7,6 +7,7 @@ using static Controls;
 public class InputReader : ScriptableObject, IGameplayActions
 {
     public event Action<Vector2> MovementEvent;
+    public event Action<bool> ShootEvent;
 
     private Controls _controls;
 
@@ -24,5 +25,17 @@ public class InputReader : ScriptableObject, IGameplayActions
     public void OnMovement(InputAction.CallbackContext context)
     {
         MovementEvent?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ShootEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            ShootEvent?.Invoke(false);
+        }
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
+    public NetworkVariable<bool> IsShooting = new NetworkVariable<bool>();
+
     [SerializeField] private float _moveSpeed = 25f;
     [SerializeField] private InputReader _inputReader;
 
@@ -22,6 +24,7 @@ public class Player : NetworkBehaviour
         _cam = Camera.main.transform;
 
         _inputReader.MovementEvent += HandleMovementInputs;
+        _inputReader.ShootEvent += HandleShootInputServerRpc;
     }
 
     public override void OnNetworkDespawn()
@@ -29,6 +32,7 @@ public class Player : NetworkBehaviour
         if (!IsOwner) return;
 
         _inputReader.MovementEvent -= HandleMovementInputs;
+        _inputReader.ShootEvent -= HandleShootInputServerRpc;
     }
 
     private void Update()
@@ -41,6 +45,12 @@ public class Player : NetworkBehaviour
     private void HandleMovementInputs(Vector2 direction)
     {
         _movementDirection = direction;
+    }
+
+    [ServerRpc]
+    private void HandleShootInputServerRpc(bool isShooting)
+    {
+        IsShooting.Value = isShooting;
     }
 
     private void HandleMovement()

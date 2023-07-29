@@ -18,6 +18,8 @@ public class EnemyBase : NetworkBehaviour
     public EnemyMovement MovementComponent { get; private set; }
 
     private StateMachine<EnemyState> _stateMachine;
+    private EnemyDetectionHandler _detectionHandler;
+    private bool _hasSpottedPlayer;
 
     public override void OnNetworkSpawn()
     {
@@ -38,6 +40,17 @@ public class EnemyBase : NetworkBehaviour
     {
         MovementComponent = GetComponent<EnemyMovement>();
         MovementComponent.Init();
+
+        _detectionHandler = GetComponent<EnemyDetectionHandler>();
+        _detectionHandler.OnSpotPlayer += OnSpotPlayer;
+    }
+
+    private void OnSpotPlayer(Player player)
+    {
+        if (_hasSpottedPlayer) return;
+
+        _hasSpottedPlayer = true;
+        SwitchState(EnemyState.PERSUING, player);
     }
 
     #region StateMachine
@@ -51,9 +64,9 @@ public class EnemyBase : NetworkBehaviour
         SwitchState(EnemyState.WANDERING);
     }
 
-    public void SwitchState(EnemyState state)
+    public void SwitchState(EnemyState state, params object[] objs)
     {
-        _stateMachine.SwitchState(state, this);
+        _stateMachine.SwitchState(state, this, objs);
     }
 
     #endregion

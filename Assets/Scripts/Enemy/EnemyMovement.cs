@@ -17,14 +17,19 @@ public class EnemyMovement : NetworkBehaviour
     public void Init()
     {
         _agent = GetComponent<NavMeshAgent>();
-        Waypoints = _waypointsParent.GetComponentsInChildren<Transform>().ToList();
-        Waypoints.RemoveAt(0);
+        if (_waypointsParent != null)
+        {
+            Waypoints = _waypointsParent.GetComponentsInChildren<Transform>().ToList();
+            Waypoints.RemoveAt(0);
+        }
     }
 
     #region Wandering
 
     public void StartWandering()
     {
+        if (Waypoints?.Count <= 0) return;
+
         _waypointIndex = 0;
         _agent.destination = Waypoints[_waypointIndex].position;
         StartCoroutine(WanderingRoutine());
@@ -32,6 +37,8 @@ public class EnemyMovement : NetworkBehaviour
 
     public void HandleWandering()
     {
+        if (Waypoints?.Count <= 0) return;
+
         if (_wanderingRoutine == null)
         {
             _wanderingRoutine = StartCoroutine(WanderingRoutine());
@@ -40,7 +47,7 @@ public class EnemyMovement : NetworkBehaviour
 
     public void StopWandering()
     {
-        StopCoroutine(_wanderingRoutine);
+        if (_wanderingRoutine != null) StopCoroutine(_wanderingRoutine);
         _wanderingRoutine = null;
     }
 
@@ -63,14 +70,9 @@ public class EnemyMovement : NetworkBehaviour
 
     #region Persuing
 
-    public void StartPersuing()
+    public void HandlePersuing(Player player)
     {
-
-    }
-
-    public void HandlePersuing()
-    {
-
+        _agent.destination = player.transform.position;
     }
 
     public void StopPersuing()
