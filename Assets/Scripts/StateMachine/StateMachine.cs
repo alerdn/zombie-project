@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 public class StateMachine<T> where T : Enum
 {
+    public StateBase CurrentState { get; private set; }
+
     private Dictionary<T, StateBase> _dictionaryState;
-    private StateBase _currentState;
 
     public StateMachine()
     {
@@ -18,9 +19,9 @@ public class StateMachine<T> where T : Enum
 
     public void SwitchState(T enumState, params object[] objs)
     {
-        if (_currentState != null) _currentState.OnStateExit();
+        if (CurrentState != null) CurrentState.OnStateExit();
 
-        _currentState = _dictionaryState[enumState];
-        _currentState.OnStateEnter(objs);
+        CurrentState = _dictionaryState[enumState];
+        CurrentState.OnStateEnter(objs);
     }
 }
