@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
-    [SerializeField] private ClientSingleton clientPrefab;
-    [SerializeField] private HostSingleton hostPrefab;
+    [SerializeField] private ClientSingleton _clientPrefab;
+    [SerializeField] private HostSingleton _hostPrefab;
 
     private async void Start()
     {
@@ -23,10 +23,10 @@ public class ApplicationController : MonoBehaviour
         }
         else
         {
-            ClientSingleton clientSingleton = Instantiate(clientPrefab);
+            ClientSingleton clientSingleton = Instantiate(_clientPrefab);
             bool isAuthenticated = await clientSingleton.CreateClient();
 
-            HostSingleton hostSingleton = Instantiate(hostPrefab);
+            HostSingleton hostSingleton = Instantiate(_hostPrefab);
             hostSingleton.CreateHost();
 
             if (isAuthenticated)

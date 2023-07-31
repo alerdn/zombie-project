@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7590322638308542454}
   - component: {fileID: 4550643857391234669}
-  - component: {fileID: 7637739978577221805}
+  - component: {fileID: 4515186034549485599}
   - component: {fileID: 418979496743817640}
   - component: {fileID: 6651629513263876289}
   - component: {fileID: 4255298225439944477}
@@ -59,7 +59,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &7637739978577221805
+--- !u!114 &4515186034549485599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 19891103376144616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdf2b39e5e964c5478719cf3c2427e22, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ceb1e3efd9a1904c955c81bf47e74a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c401a5ac74b646949832f43fa455139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsShooting:
+    m_InternalValue: 0
   _moveSpeed: 5
   _inputReader: {fileID: 11400000, guid: b729e0675022bea42ba55ef84391998f, type: 2}
 --- !u!143 &6651629513263876289

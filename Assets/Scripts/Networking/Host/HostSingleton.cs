@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class HostSingleton : PersistentSingleton<HostSingleton>
 {
-    private HostGameManager _gameManager;
+    public HostGameManager GameManager { get; private set; }
 
     public void CreateHost()
     {
-        _gameManager = new HostGameManager();
+        GameManager = new HostGameManager();
     }
 }

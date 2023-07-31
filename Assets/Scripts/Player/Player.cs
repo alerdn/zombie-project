@@ -58,6 +58,8 @@ public class Player : NetworkBehaviour
         float horizontal = _movementDirection.x;
         float vertical = _movementDirection.y;
 
+        if (_cam == null) _cam = Camera.main.transform;
+
         float targetAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg + _cam.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, .1f);
         Vector3 speedVector = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * _moveSpeed;
