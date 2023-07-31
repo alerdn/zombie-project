@@ -269,7 +269,6 @@ GameObject:
   - component: {fileID: 189457569}
   - component: {fileID: 189457568}
   - component: {fileID: 189457567}
-  - component: {fileID: 189457566}
   m_Layer: 5
   m_Name: Host Button
   m_TagString: Untagged
@@ -297,18 +296,6 @@ RectTransform:
   m_AnchoredPosition: {x: 64, y: -64}
   m_SizeDelta: {x: 336.3224, y: 83.7577}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &189457566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189457564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17dcc52b6ba52ac4ab5a86d972138790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &189457567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,19 +339,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 189457568}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 189457566}
-        m_TargetAssemblyTypeName: JoinServer, Assembly-CSharp
-        m_MethodName: StartHost
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &189457568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,7 +1012,6 @@ GameObject:
   - component: {fileID: 1253329134}
   - component: {fileID: 1253329133}
   - component: {fileID: 1253329132}
-  - component: {fileID: 1253329131}
   m_Layer: 5
   m_Name: Client Button
   m_TagString: Untagged
@@ -1065,18 +1039,6 @@ RectTransform:
   m_AnchoredPosition: {x: 64, y: -160}
   m_SizeDelta: {x: 336.3224, y: 83.7577}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1253329131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1253329129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17dcc52b6ba52ac4ab5a86d972138790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1253329132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,19 +1082,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1253329133}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1253329131}
-        m_TargetAssemblyTypeName: JoinServer, Assembly-CSharp
-        m_MethodName: StartClient
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1253329133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,7 +1133,6 @@ GameObject:
   - component: {fileID: 1503247564}
   - component: {fileID: 1503247563}
   - component: {fileID: 1503247562}
-  - component: {fileID: 1503247561}
   m_Layer: 5
   m_Name: Lobby Button
   m_TagString: Untagged
@@ -1211,18 +1160,6 @@ RectTransform:
   m_AnchoredPosition: {x: 64, y: -260}
   m_SizeDelta: {x: 336.3224, y: 83.7577}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1503247561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503247559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17dcc52b6ba52ac4ab5a86d972138790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1503247562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,19 +1203,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1503247563}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1503247561}
-        m_TargetAssemblyTypeName: JoinServer, Assembly-CSharp
-        m_MethodName: StartClient
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1503247563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1401,10 +1326,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 72
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1756,7 +1681,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Join code...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1783,10 +1708,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 47.2
+  m_fontSizeBase: 42.26
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 2

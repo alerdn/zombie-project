@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class HostSingleton : Singleton<HostSingleton>
+public class HostSingleton : PersistentSingleton<HostSingleton>
 {
     private HostGameManager _gameManager;
 
