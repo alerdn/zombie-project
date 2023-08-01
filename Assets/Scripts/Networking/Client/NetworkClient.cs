@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkClient
+public class NetworkClient : IDisposable
 {
     private NetworkManager _networkManager;
     private const string MenuSceneName = "SCN_Menu_Prototype";
@@ -28,5 +29,12 @@ public class NetworkClient
         {
             _networkManager.Shutdown();
         }
+    }
+
+    public void Dispose()
+    {
+        if (_networkManager == null) return;
+
+        _networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 }

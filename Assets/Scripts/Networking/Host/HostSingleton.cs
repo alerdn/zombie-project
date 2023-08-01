@@ -11,4 +11,9 @@ public class HostSingleton : PersistentSingleton<HostSingleton>
     {
         GameManager = new HostGameManager();
     }
+
+    private void OnDestroy()
+    {
+        GameManager?.Dispose();
+    }
 }
