@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class NetworkServer : IDisposable
 {
+    public Action<UserData> OnUserJoined;
+    public Action<UserData> OnUserLeft;
     public Action<string> OnClientLeft;
 
     private NetworkManager _networkManager;
@@ -35,6 +37,7 @@ public class NetworkServer : IDisposable
 
         _clientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
         _authIdToUserData[userData.userAuthId] = userData;
+        OnUserJoined?.Invoke(userData);
 
         response.Approved = true;
         response.CreatePlayerObject = true;
@@ -50,6 +53,7 @@ public class NetworkServer : IDisposable
         if (_clientIdToAuth.TryGetValue(clientId, out string authId))
         {
             _clientIdToAuth.Remove(clientId);
+            OnUserLeft?.Invoke(_authIdToUserData[authId]);
             _authIdToUserData.Remove(authId);
             OnClientLeft?.Invoke(authId);
         }
