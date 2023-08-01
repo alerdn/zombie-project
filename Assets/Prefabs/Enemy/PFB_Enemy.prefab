@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 5891888915166320103}
   - component: {fileID: -4502346425886680879}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: PFB_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
