@@ -12,7 +12,7 @@ public class NameSelector : MonoBehaviour
     [SerializeField]
     private Vector2 _nameLengthRule = new Vector2(1, 12);
 
-    private const string PlayerNameKey = "PlayerName";
+    public const string PlayerNameKey = "PlayerName";
 
     private void Start()
     {

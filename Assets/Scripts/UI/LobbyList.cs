@@ -26,7 +26,6 @@ public class LobbyList : MonoBehaviour
 
         try
         {
-
             QueryLobbiesOptions options = new QueryLobbiesOptions();
             options.Count = 25;
 
