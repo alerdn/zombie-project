@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Cinemachine;
 
 
 public class Player : NetworkBehaviour
@@ -10,6 +11,10 @@ public class Player : NetworkBehaviour
 
     [SerializeField] private float _moveSpeed = 25f;
     [SerializeField] private InputReader _inputReader;
+
+    [Header("Camera")]
+    [SerializeField] private CinemachineVirtualCamera _vcam;
+    [SerializeField] private int _vcamPriority = 15;
 
     private Vector2 _movementDirection;
     private CharacterController _charController;
@@ -22,6 +27,8 @@ public class Player : NetworkBehaviour
 
         _charController = GetComponent<CharacterController>();
         _cam = Camera.main.transform;
+
+        _vcam.Priority = _vcamPriority;
 
         _inputReader.MovementEvent += HandleMovementInputs;
         _inputReader.ShootEvent += HandleShootInputServerRpc;
