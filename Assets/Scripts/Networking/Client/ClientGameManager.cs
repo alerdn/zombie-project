@@ -17,17 +17,26 @@ public class ClientGameManager : IDisposable
 {
     private JoinAllocation _joinAllocation;
     private NetworkClient _networkClient;
+    private MatchplayMatchmaker _matchmaker;
+    private UserData _userData;
     private const string MenuSceneName = "SCN_Menu_Prototype";
 
     public async Task<bool> InitAsync()
     {
         await UnityServices.InitializeAsync();
+
         _networkClient = new NetworkClient(NetworkManager.Singleton);
+        _matchmaker = new MatchplayMatchmaker();
 
         AuthState authState = await AuthenticationWrapper.DoAuth();
 
         if (authState == AuthState.Authenticated)
         {
+            _userData = new UserData
+            {
+                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                userAuthId = AuthenticationService.Instance.PlayerId
+            };
             return true;
         }
 
@@ -55,16 +64,54 @@ public class ClientGameManager : IDisposable
         RelayServerData relayServerData = new RelayServerData(_joinAllocation, "dtls");
         transport.SetRelayServerData(relayServerData);
 
-        UserData userData = new UserData
-        {
-            userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
-            userAuthId = AuthenticationService.Instance.PlayerId
-        };
-        string payload = JsonUtility.ToJson(userData);
+        ConnectClient();
+    }
+
+    public void StartClient(string ip, int port)
+    {
+        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        transport.SetConnectionData(ip, (ushort)port);
+
+        ConnectClient();
+    }
+
+    private void ConnectClient()
+    {
+        string payload = JsonUtility.ToJson(_userData);
         byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 
         NetworkManager.Singleton.StartClient();
+    }
+
+    public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+    {
+        if (_matchmaker.IsMatchmaking) return;
+
+        MatchmakerPollingResult matchResult = await GetMatchAsync();
+        onMatchmakeResponse?.Invoke(matchResult);
+    }
+
+    private async Task<MatchmakerPollingResult> GetMatchAsync()
+    {
+        MatchmakingResult matchmakingResult = await _matchmaker.Matchmake(_userData);
+
+        if (matchmakingResult.result == MatchmakerPollingResult.Success)
+        {
+            StartClient(matchmakingResult.ip, matchmakingResult.port);
+        }
+
+        return matchmakingResult.result;
+    }
+
+    public async Task CancelMatchmaking()
+    {
+        await _matchmaker.CancelMatchmaking();
+    }
+
+    public void Disconnect()
+    {
+        _networkClient.Disconnect();
     }
 
     public void Dispose()
