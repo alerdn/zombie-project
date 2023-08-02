@@ -41,6 +41,7 @@ namespace ZombieProject.Core
 
         private Vector2 _movementDirection;
         private Vector2 _mouseDirection;
+        private bool _jump;
 
         public override void OnNetworkSpawn()
         {
@@ -58,6 +59,7 @@ namespace ZombieProject.Core
             _inputReader.MovementEvent += HandleMovementInputs;
             _inputReader.LookEvent += HandleLookInput;
             _inputReader.ShootEvent += HandleShootInputServerRpc;
+            _inputReader.JumpEvent += HandleJumpInput;
         }
 
         public override void OnNetworkDespawn()
@@ -65,7 +67,9 @@ namespace ZombieProject.Core
             if (!IsOwner) return;
 
             _inputReader.MovementEvent -= HandleMovementInputs;
+            _inputReader.LookEvent -= HandleLookInput;
             _inputReader.ShootEvent -= HandleShootInputServerRpc;
+            _inputReader.JumpEvent -= HandleJumpInput;
         }
 
         private void Update()
@@ -103,7 +107,6 @@ namespace ZombieProject.Core
         {
             _vertical += _gravity * Time.deltaTime * Vector3.up;
 
-
             if (_characterController.isGrounded)
             {
                 _vertical = Vector3.down;
@@ -112,7 +115,7 @@ namespace ZombieProject.Core
             _isGrounded = Physics.Raycast(_groundCheckTransform.position, Vector3.down, .25f, _groundLayers);
 
             // Alterar para controle nos Inputs
-            if (Keyboard.current.spaceKey.wasPressedThisFrame && _isGrounded)
+            if (_jump && _isGrounded)
             {
                 _vertical = _jumpSpeed * Vector3.up;
             }
@@ -145,6 +148,11 @@ namespace ZombieProject.Core
         private void HandleShootInputServerRpc(bool isShooting)
         {
             IsShooting.Value = isShooting;
+        }
+
+        private void HandleJumpInput(bool jump)
+        {
+            _jump = jump;
         }
     }
 }
