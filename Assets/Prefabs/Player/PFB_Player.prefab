@@ -187,7 +187,7 @@ MonoBehaviour:
     m_Bits: 64
   _viewPoint: {fileID: 5396182177818795905}
   _mouseInput: {x: 0, y: 0}
-  _mouseSensitivity: 5
+  _mouseSensitivity: 0.5
   _verticalRotStore: 0
   _cam: {fileID: 0}
   InvertLook: 0
@@ -458,7 +458,7 @@ Transform:
   m_GameObject: {fileID: 8782852734504230773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.439, z: 0.13}
+  m_LocalPosition: {x: 0, y: 0.491, z: 0.358}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

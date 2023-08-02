@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
+using UnityEngine.InputSystem;
 
 namespace ZombieProject.Core
 {
@@ -22,6 +22,7 @@ namespace ZombieProject.Core
         [SerializeField] private float _fowardSpeed = 5f;
         [SerializeField] private float _strafeSpeed = 5f;
         [SerializeField] private Transform _groundCheckTransform;
+
         [Header("Jump")]
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpSpeed;
@@ -33,10 +34,13 @@ namespace ZombieProject.Core
         [Header("Vision")]
         [SerializeField] private Transform _viewPoint;
         [SerializeField] private Vector2 _mouseInput;
-        [SerializeField] private float _mouseSensitivity = 5f;
+        [SerializeField] private float _mouseSensitivity = 1f;
         [SerializeField] private float _verticalRotStore;
         [SerializeField] private Camera _cam;
         [SerializeField] private bool InvertLook = false;
+
+        private Vector2 _movementDirection;
+        private Vector2 _mouseDirection;
 
         public override void OnNetworkSpawn()
         {
@@ -51,6 +55,8 @@ namespace ZombieProject.Core
             _gravity = (-2 * _jumpMaxHeight) / (_timeToMaxHeight * _timeToMaxHeight);
             _jumpSpeed = (2 * _jumpMaxHeight) / _timeToMaxHeight;
 
+            _inputReader.MovementEvent += HandleMovementInputs;
+            _inputReader.LookEvent += HandleLookInput;
             _inputReader.ShootEvent += HandleShootInputServerRpc;
         }
 
@@ -58,6 +64,7 @@ namespace ZombieProject.Core
         {
             if (!IsOwner) return;
 
+            _inputReader.MovementEvent -= HandleMovementInputs;
             _inputReader.ShootEvent -= HandleShootInputServerRpc;
         }
 
@@ -81,8 +88,8 @@ namespace ZombieProject.Core
 
         private void HandleMovement()
         {
-            float forwardInput = Input.GetAxisRaw("Vertical");
-            float strafeInput = Input.GetAxisRaw("Horizontal");
+            float forwardInput = _movementDirection.y;
+            float strafeInput = _movementDirection.x;
 
             _foward = forwardInput * _fowardSpeed * transform.forward;
             _strafe = strafeInput * _strafeSpeed * transform.right;
@@ -104,7 +111,8 @@ namespace ZombieProject.Core
 
             _isGrounded = Physics.Raycast(_groundCheckTransform.position, Vector3.down, .25f, _groundLayers);
 
-            if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+            // Alterar para controle nos Inputs
+            if (Keyboard.current.spaceKey.wasPressedThisFrame && _isGrounded)
             {
                 _vertical = _jumpSpeed * Vector3.up;
             }
@@ -112,7 +120,7 @@ namespace ZombieProject.Core
 
         private void HandleVision()
         {
-            _mouseInput = new Vector2(Input.GetAxisRaw("Mouse X") * _mouseSensitivity, Input.GetAxisRaw("Mouse Y")) * _mouseSensitivity;
+            _mouseInput = new Vector2(_mouseDirection.x * _mouseSensitivity, _mouseDirection.y) * _mouseSensitivity;
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + _mouseInput.x, transform.rotation.eulerAngles.z);
 
@@ -121,6 +129,16 @@ namespace ZombieProject.Core
 
             if (InvertLook) _viewPoint.rotation = Quaternion.Euler(_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
             else _viewPoint.rotation = Quaternion.Euler(-_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
+        }
+
+        private void HandleMovementInputs(Vector2 direction)
+        {
+            _movementDirection = direction.normalized;
+        }
+
+        private void HandleLookInput(Vector2 direction)
+        {
+            _mouseDirection = direction;
         }
 
         [ServerRpc]
