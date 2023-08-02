@@ -7,6 +7,7 @@ using static Controls;
 public class InputReader : ScriptableObject, IGameplayActions
 {
     public event Action<Vector2> MovementEvent;
+    public event Action<Vector2> LookEvent;
     public event Action<bool> ShootEvent;
 
     private Controls _controls;
@@ -37,5 +38,10 @@ public class InputReader : ScriptableObject, IGameplayActions
         {
             ShootEvent?.Invoke(false);
         }
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        LookEvent?.Invoke(context.ReadValue<Vector2>());
     }
 }
