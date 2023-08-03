@@ -28,8 +28,6 @@ public class MatchplayMatchmaker : IDisposable
     private string lastUsedTicket;
     private CancellationTokenSource cancelToken;
 
-    private const int TicketCooldown = 1000;
-
     public bool IsMatchmaking { get; private set; }
 
     public async Task<MatchmakingResult> Matchmake(UserData data)
@@ -75,7 +73,7 @@ public class MatchplayMatchmaker : IDisposable
                         Debug.Log($"Polled Ticket: {lastUsedTicket} Status: {matchAssignment.Status} ");
                     }
 
-                    await Task.Delay(TicketCooldown);
+                    await Task.Delay(Constants.TicketCooldown);
                 }
             }
             catch (MatchmakerServiceException e)

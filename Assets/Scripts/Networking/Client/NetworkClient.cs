@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class NetworkClient : IDisposable
 {
     private NetworkManager _networkManager;
-    private const string MenuSceneName = "SCN_Menu_Prototype";
 
     public NetworkClient(NetworkManager networkManager)
     {
@@ -25,9 +24,9 @@ public class NetworkClient : IDisposable
 
     public void Disconnect()
     {
-        if (SceneManager.GetActiveScene().name != MenuSceneName)
+        if (SceneManager.GetActiveScene().name != Constants.MenuSceneName)
         {
-            SceneManager.LoadScene(MenuSceneName);
+            SceneManager.LoadScene(Constants.MenuSceneName);
         }
 
         if (_networkManager.IsConnectedClient)

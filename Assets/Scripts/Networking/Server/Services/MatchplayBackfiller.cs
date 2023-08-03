@@ -12,7 +12,6 @@ public class MatchplayBackfiller : IDisposable
     private BackfillTicket localBackfillTicket;
     private bool localDataDirty;
     private int maxPlayers;
-    private const int TicketCheckMs = 1000;
 
     private int MatchPlayerCount => localBackfillTicket?.Properties.MatchProperties.Players.Count ?? 0;
 
@@ -70,7 +69,7 @@ public class MatchplayBackfiller : IDisposable
             Debug.LogWarningFormat("User: {0} - {1} already in Match. Ignoring add.",
                 userData.userName,
                 userData.userAuthId);
-                
+
             return;
         }
 
@@ -141,7 +140,7 @@ public class MatchplayBackfiller : IDisposable
                 break;
             }
 
-            await Task.Delay(TicketCheckMs);
+            await Task.Delay(Constants.TicketCheckMs);
         }
     }
 

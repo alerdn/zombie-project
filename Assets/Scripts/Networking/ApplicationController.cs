@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class ApplicationController : MonoBehaviour
 {
-    private const string GameSceneName = "SCN_Game_Prototype";
-
     [SerializeField] private ClientSingleton _clientPrefab;
     [SerializeField] private HostSingleton _hostPrefab;
     [SerializeField] private ServerSingleton _serverPrefab;
@@ -52,7 +50,7 @@ public class ApplicationController : MonoBehaviour
 
     private IEnumerator LoadGameSceneAsync(ServerSingleton serverSingleton)
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(GameSceneName);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(Constants.GameSceneName);
 
         while (!asyncOperation.isDone)
         {

@@ -16,8 +16,6 @@ using Unity.Services.Authentication;
 
 public class HostGameManager : IDisposable
 {
-    private const int MaxConnections = 20;
-    private const string GameSceneName = "SCN_Game_Prototype";
     private Allocation _allocation;
     private string _joinCode;
     private string _lobbyId;
@@ -33,7 +31,7 @@ public class HostGameManager : IDisposable
     {
         try
         {
-            _allocation = await Relay.Instance.CreateAllocationAsync(MaxConnections);
+            _allocation = await Relay.Instance.CreateAllocationAsync(Constants.MaxConnections);
         }
         catch (Exception e)
         {
@@ -70,8 +68,8 @@ public class HostGameManager : IDisposable
                 }
             };
 
-            string playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name");
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync($"{playerName}'s Lobby", MaxConnections, lobbyOptions);
+            string playerName = PlayerPrefs.GetString(Constants.PlayerNameKey, "Missing Name");
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync($"{playerName}'s Lobby", Constants.MaxConnections, lobbyOptions);
             _lobbyId = lobby.Id;
 
             HostSingleton.Instance.StartCoroutine(HearthbeatLobby(15f));
@@ -86,7 +84,7 @@ public class HostGameManager : IDisposable
 
         UserData userData = new UserData
         {
-            userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+            userName = PlayerPrefs.GetString(Constants.PlayerNameKey, "Missing Name"),
             userAuthId = AuthenticationService.Instance.PlayerId
         };
         string payload = JsonUtility.ToJson(userData);
@@ -96,7 +94,7 @@ public class HostGameManager : IDisposable
         NetworkManager.Singleton.StartHost();
         _networkServer.OnClientLeft += HandleClientLeft;
 
-        NetworkManager.Singleton.SceneManager.LoadScene(GameSceneName, LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(Constants.GameSceneName, LoadSceneMode.Single);
     }
 
     private IEnumerator HearthbeatLobby(float waitTimeSeconds)

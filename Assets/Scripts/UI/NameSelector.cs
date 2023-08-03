@@ -12,8 +12,6 @@ public class NameSelector : MonoBehaviour
     [SerializeField]
     private Vector2 _nameLengthRule = new Vector2(1, 12);
 
-    public const string PlayerNameKey = "PlayerName";
-
     private void Start()
     {
         // Se estamos no servidor, ou seja, sem image gráfica
@@ -23,7 +21,7 @@ public class NameSelector : MonoBehaviour
             return;
         }
 
-        _nameField.text = PlayerPrefs.GetString(PlayerNameKey, string.Empty);
+        _nameField.text = PlayerPrefs.GetString(Constants.PlayerNameKey, string.Empty);
         HandleNameChanged();
     }
 
@@ -36,7 +34,7 @@ public class NameSelector : MonoBehaviour
 
     public void Connect()
     {
-        PlayerPrefs.SetString(PlayerNameKey, _nameField.text);
+        PlayerPrefs.SetString(Constants.PlayerNameKey, _nameField.text);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

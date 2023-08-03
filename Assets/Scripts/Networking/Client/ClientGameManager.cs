@@ -19,7 +19,6 @@ public class ClientGameManager : IDisposable
     private NetworkClient _networkClient;
     private MatchplayMatchmaker _matchmaker;
     private UserData _userData;
-    private const string MenuSceneName = "SCN_Menu_Prototype";
 
     public async Task<bool> InitAsync()
     {
@@ -34,7 +33,7 @@ public class ClientGameManager : IDisposable
         {
             _userData = new UserData
             {
-                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                userName = PlayerPrefs.GetString(Constants.PlayerNameKey, "Missing Name"),
                 userAuthId = AuthenticationService.Instance.PlayerId
             };
             return true;
@@ -45,7 +44,7 @@ public class ClientGameManager : IDisposable
 
     public void GoToMenu()
     {
-        SceneManager.LoadScene(MenuSceneName);
+        SceneManager.LoadScene(Constants.MenuSceneName);
     }
 
     public async Task StartClientAsync(string joinCode)
