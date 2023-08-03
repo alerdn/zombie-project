@@ -43,6 +43,11 @@ namespace ZombieProject.Core
         private Vector2 _mouseDirection;
         private bool _jump;
 
+        [Header("Gun")]
+        [SerializeField] private List<Gun> _allGuns;
+        [SerializeField] private GameObject _hitPrefab;
+        private int _currentGun;
+
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
@@ -148,11 +153,18 @@ namespace ZombieProject.Core
         private void HandleShootInputServerRpc(bool isShooting)
         {
             IsShooting.Value = isShooting;
+            
+            Shoot();
         }
 
         private void HandleJumpInput(bool jump)
         {
             _jump = jump;
+        }
+
+        private void Shoot()
+        {
+            _allGuns[_currentGun].Shoot(_cam, _hitPrefab);
         }
     }
 }

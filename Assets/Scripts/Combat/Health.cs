@@ -8,6 +8,8 @@ public class Health : NetworkBehaviour
 {
     public event Action<Health> OnDie;
 
+    [SerializeField] private GameObject _deatheEffect;
+
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
     public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>();
 
@@ -39,7 +41,9 @@ public class Health : NetworkBehaviour
 
         if (CurrentHealth.Value == 0)
         {
-            OnDie?.Invoke(this);
+            //OnDie?.Invoke(this);
+            Destroy(gameObject);
+            Instantiate(_deatheEffect, gameObject.transform.position, Quaternion.identity);
             _isDead = true;
         }
     }
