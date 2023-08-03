@@ -9,14 +9,15 @@ public class ServerSingleton : PersistentSingleton<HostSingleton>
 {
     public ServerGameManager GameManager { get; private set; }
 
-    public async Task CreateServer()
+    public async Task CreateServer(NetworkObject playerPrefab)
     {
         await UnityServices.InitializeAsync();
         GameManager = new ServerGameManager(
             ApplicationData.IP(),
             ApplicationData.Port(),
             ApplicationData.QPort(),
-            NetworkManager.Singleton
+            NetworkManager.Singleton,
+            playerPrefab
         );
     }
 
