@@ -9,8 +9,8 @@ public class LobbyList : MonoBehaviour
 {
     [SerializeField] private Transform _lobbyItemParent;
     [SerializeField] private LobbyItem _lobbyItemPrefab;
+    [SerializeField] private MainMenu _mainMenu;
 
-    private bool _isJoining;
     private bool _isRefreshing;
 
     private void OnEnable()
@@ -43,7 +43,7 @@ public class LobbyList : MonoBehaviour
 
             QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
             foreach (Transform child in _lobbyItemParent) Destroy(child.gameObject);
-           
+
             foreach (Lobby lobby in lobbies.Results)
             {
                 LobbyItem lobbyItem = Instantiate(_lobbyItemPrefab, _lobbyItemParent);
@@ -58,24 +58,8 @@ public class LobbyList : MonoBehaviour
         _isRefreshing = false;
     }
 
-    public async void JoinAsync(Lobby lobby)
+    public void JoinAsync(Lobby lobby)
     {
-        if (_isJoining) return;
-
-        _isJoining = true;
-
-        try
-        {
-            Lobby joiningLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
-            string joinCode = joiningLobby.Data["JoinCode"].Value;
-
-            await ClientSingleton.Instance.GameManager.StartClientAsync(joinCode);
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
-
-        _isJoining = false;
+        _mainMenu.JoinAsync(lobby);
     }
 }

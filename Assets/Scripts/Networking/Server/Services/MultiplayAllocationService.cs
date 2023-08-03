@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class MultiplayAllocationService : IDisposable
 {
+    private const ushort MaxPlayers = 20;
+
     private IMultiplayService multiplayService;
     private MultiplayEventCallbacks serverCallbacks;
     private IServerQueryHandler serverCheckManager;
@@ -90,7 +92,7 @@ public class MultiplayAllocationService : IDisposable
     {
         if (multiplayService == null) { return; }
 
-        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync((ushort)20, "", "", "0", "");
+        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync(MaxPlayers, "ServerName", "", "0", "");
 
         ServerCheckLoop(serverCheckCancel.Token);
     }

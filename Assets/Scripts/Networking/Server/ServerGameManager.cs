@@ -23,14 +23,13 @@ public class ServerGameManager : IDisposable
     private NetworkServer _networkServer;
     private MultiplayAllocationService _multiplayAllocationService;
     private MatchplayBackfiller _backfiller;
-    private const string GameSceneName = "SCN_Game_Prototype";
 
-    public ServerGameManager(string serverIP, int serverPort, int queryPort, NetworkManager manager)
+    public ServerGameManager(string serverIP, int serverPort, int queryPort, NetworkManager manager, NetworkObject playerPrefab)
     {
         _serverIP = serverIP;
         _serverPort = serverPort;
         _queryPort = queryPort;
-        _networkServer = new NetworkServer(manager);
+        _networkServer = new NetworkServer(manager, playerPrefab);
         _multiplayAllocationService = new MultiplayAllocationService();
     }
 
@@ -62,8 +61,6 @@ public class ServerGameManager : IDisposable
         {
             Debug.LogWarning("Network server did not start as expected.");
         }
-
-        NetworkManager.Singleton.SceneManager.LoadScene(GameSceneName, LoadSceneMode.Single);
     }
 
     private async Task StartBackfill(MatchmakingResults payload)

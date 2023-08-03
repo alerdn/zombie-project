@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour
 {
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
         DontDestroyOnLoad(gameObject);
     }
 }
