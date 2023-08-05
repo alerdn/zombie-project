@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace ZombieProject.Core
 {
     public class Player : NetworkBehaviour
     {
         public NetworkVariable<bool> IsShooting = new NetworkVariable<bool>();
+        public PlayerInventory InventoryComponent { get; private set; }
 
         [Header("Input")]
         [SerializeField] private InputReader _inputReader;
@@ -50,6 +50,7 @@ namespace ZombieProject.Core
             Cursor.lockState = CursorLockMode.Locked;
 
             _characterController = GetComponent<CharacterController>();
+            InventoryComponent = GetComponent<PlayerInventory>();
 
             _cam = Camera.main;
 
