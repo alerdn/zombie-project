@@ -16,16 +16,11 @@ public class InventoryLayout : NetworkBehaviour
 
     private bool _isInventoryOpen;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        _inputReader.ToggleInventoryEvent += ToggleInventory;
-        ToggleInventory(false);
-    }
+        if (!IsOwner) return;
 
-    private void ToggleInventory(bool open)
-    {
-        _isInventoryOpen = !open;
-        ToggleInventory();
+        _inputReader.ToggleInventoryEvent += ToggleInventory;
     }
 
     public void ToggleInventory()

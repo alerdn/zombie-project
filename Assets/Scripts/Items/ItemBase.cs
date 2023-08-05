@@ -24,16 +24,16 @@ public class ItemBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Player player = collision.transform.GetComponent<Player>();
+        PlayerInventory player = collision.transform.GetComponent<PlayerInventory>();
         if (player)
         {
             Collect(player);
         }
     }
 
-    protected virtual void Collect(Player player)
+    protected virtual void Collect(PlayerInventory playerInventory)
     {
-        if (!player.InventoryComponent.AddItem(_itemData))
+        if (!playerInventory.AddItem(_itemData))
         {
             Debug.Log($"Não tem mais espaço para {_itemData.ItemType}");
             return;
