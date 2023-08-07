@@ -6,25 +6,22 @@ using static Controls;
 [CreateAssetMenu]
 public class InputReader : ScriptableObject, IGameplayActions, IUIActions
 {
+    public Controls Controls { get; private set; }
+
     public event Action<Vector2> MovementEvent;
     public event Action<Vector2> LookEvent;
     public event Action<bool> ShootEvent;
     public event Action<bool> JumpEvent;
     public event Action ToggleInventoryEvent;
 
-    private Controls _controls;
-
     private void OnEnable()
     {
-        if (_controls == null)
+        if (Controls == null)
         {
-            _controls = new Controls();
-            _controls.Gameplay.SetCallbacks(this);
-            _controls.UI.SetCallbacks(this);
+            Controls = new Controls();
+            Controls.Gameplay.SetCallbacks(this);
+            Controls.UI.SetCallbacks(this);
         }
-
-        _controls.Gameplay.Enable();
-        _controls.UI.Disable();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
