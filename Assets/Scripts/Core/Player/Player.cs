@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -36,7 +37,7 @@ namespace ZombieProject.Core
         [SerializeField] private Vector2 _mouseInput;
         [SerializeField] private float _mouseSensitivity = 1f;
         [SerializeField] private float _verticalRotStore;
-        [SerializeField] private Camera _cam;
+        [SerializeField] private CinemachineVirtualCamera _vcam;
         [SerializeField] private bool InvertLook = false;
 
         private Vector2 _movementDirection;
@@ -56,14 +57,14 @@ namespace ZombieProject.Core
 
             _characterController = GetComponent<CharacterController>();
 
-            _cam = Camera.main;
+            _vcam.Priority = 15;
 
             _gravity = (-2 * _jumpMaxHeight) / (_timeToMaxHeight * _timeToMaxHeight);
             _jumpSpeed = (2 * _jumpMaxHeight) / _timeToMaxHeight;
 
             _inputReader.MovementEvent += HandleMovementInputs;
             _inputReader.LookEvent += HandleLookInput;
-            _inputReader.ShootEvent += HandleShootInputServerRpc;
+            _inputReader.ShootEvent += HandleShootInput;
             _inputReader.JumpEvent += HandleJumpInput;
         }
 
@@ -73,7 +74,7 @@ namespace ZombieProject.Core
 
             _inputReader.MovementEvent -= HandleMovementInputs;
             _inputReader.LookEvent -= HandleLookInput;
-            _inputReader.ShootEvent -= HandleShootInputServerRpc;
+            _inputReader.ShootEvent -= HandleShootInput;
             _inputReader.JumpEvent -= HandleJumpInput;
         }
 
@@ -84,15 +85,6 @@ namespace ZombieProject.Core
             HandleMovement();
             HandleJump();
             HandleVision();
-        }
-
-        private void LateUpdate()
-        {
-            if (!IsOwner) return;
-
-            if (_cam == null) _cam = Camera.main;
-
-            _cam.transform.SetPositionAndRotation(_viewPoint.position, _viewPoint.rotation);
         }
 
         private void HandleMovement()
@@ -149,22 +141,16 @@ namespace ZombieProject.Core
             _mouseDirection = direction;
         }
 
-        [ServerRpc]
-        private void HandleShootInputServerRpc(bool isShooting)
+        private void HandleShootInput(bool isShooting)
         {
             IsShooting.Value = isShooting;
-            
-            Shoot();
+
+            _allGuns[_currentGun].Shoot(_viewPoint.position, _viewPoint.forward, _hitPrefab);
         }
 
         private void HandleJumpInput(bool jump)
         {
             _jump = jump;
-        }
-
-        private void Shoot()
-        {
-            _allGuns[_currentGun].Shoot(_cam, _hitPrefab);
         }
     }
 }

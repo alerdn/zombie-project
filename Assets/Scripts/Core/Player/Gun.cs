@@ -30,21 +30,28 @@ public class Gun : NetworkBehaviour
         ShotDamage = _gunObject.ShotDamage;
     }
 
-    public virtual void Shoot(Camera _cam, GameObject bullet)
+    public virtual void Shoot(Vector3 viewPointPosition, Vector3 viewPointForward, GameObject bullet)
     {
-        Ray ray = _cam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        // Apenas instancia gráfico
+        if (Physics.Raycast(viewPointPosition, viewPointForward, out RaycastHit hit))
         {
             GameObject bulletInstance = Instantiate(bullet, hit.point, Quaternion.identity);
+            Destroy(bulletInstance, 2f);
+        }
 
+        // Efetua cálculos no servidor
+        ShootServerRpc(viewPointPosition, viewPointForward);
+    }
+
+    [ServerRpc]
+    public virtual void ShootServerRpc(Vector3 viewPointPosition, Vector3 viewPointForward)
+    {
+        if (Physics.Raycast(viewPointPosition, viewPointForward, out RaycastHit hit))
+        {
             if (hit.collider.CompareTag("Enemy"))
             {
                 hit.collider.GetComponent<Health>().TakeDamage(ShotDamage);
             }
-            Destroy(bulletInstance, 2f);
         }
-
-
     }
 }
