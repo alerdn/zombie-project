@@ -53,7 +53,7 @@ public class Gun : NetworkBehaviour
         {
             ShootGraphicClientRpc(hit.point);
 
-            if (hit.collider.CompareTag("Enemy"))
+            if (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Player"))
             {
                 hit.collider.GetComponent<Health>().TakeDamage(ShotDamage);
             }

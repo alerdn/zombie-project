@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
-    public event Action<Health> OnDie;
+    //public event Action<Health> OnDie;
 
     [SerializeField] private GameObject _deatheEffect;
 
