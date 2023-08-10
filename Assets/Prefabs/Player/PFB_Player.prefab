@@ -194,7 +194,8 @@ MonoBehaviour:
   InvertLook: 0
   _allGuns:
   - {fileID: 2899682397507533561}
-  _hitPrefab: {fileID: 6751200271042001062, guid: 93949c2306c425744bdac1494688c666, type: 3}
+  _hitPrefab:
+    m_InternalValue: {fileID: 6751200271042001062, guid: 93949c2306c425744bdac1494688c666, type: 3}
 --- !u!114 &343950076338035438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,8 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deatheEffect: {fileID: 7141676911629108955, guid: 4f673b53cddbf834caed806cef35e70d, type: 3}
   <MaxHealth>k__BackingField: 100
-  CurrentHealth:
-    m_InternalValue: 0
+  _currentHealth: 0
 --- !u!1 &1543977220751321966
 GameObject:
   m_ObjectHideFlags: 0

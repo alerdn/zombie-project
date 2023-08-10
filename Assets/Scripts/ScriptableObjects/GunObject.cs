@@ -13,4 +13,5 @@ public class GunObject : ScriptableObject
     public int Ammo;
     public int TotalAmmo;
     public int ShotDamage;
+    public GameObject Bullet;
 }

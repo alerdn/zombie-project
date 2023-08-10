@@ -46,7 +46,7 @@ namespace ZombieProject.Core
 
         [Header("Gun")]
         [SerializeField] private List<Gun> _allGuns;
-        [SerializeField] private GameObject _hitPrefab;
+
         private int _currentGun;
 
         public override void OnNetworkSpawn()
@@ -143,9 +143,7 @@ namespace ZombieProject.Core
 
         private void HandleShootInput(bool isShooting)
         {
-            IsShooting.Value = isShooting;
-
-            _allGuns[_currentGun].Shoot(_viewPoint.position, _viewPoint.forward, _hitPrefab);
+            _allGuns[_currentGun].Shoot(_viewPoint.position, _viewPoint.forward);
         }
 
         private void HandleJumpInput(bool jump)

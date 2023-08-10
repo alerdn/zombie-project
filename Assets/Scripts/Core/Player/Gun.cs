@@ -18,6 +18,8 @@ public class Gun : NetworkBehaviour
 
     [SerializeField] private GunObject _gunObject;
 
+    private GameObject _bulletPrefab;
+
     private void Start()
     {
         TimeBetweenShot = _gunObject.TimeBetweenShot;
@@ -28,15 +30,16 @@ public class Gun : NetworkBehaviour
         Ammo = _gunObject.TotalAmmo;
         TotalAmmo = _gunObject.TotalAmmo;
         ShotDamage = _gunObject.ShotDamage;
+
+        _bulletPrefab = _gunObject.Bullet;
     }
 
-    public virtual void Shoot(Vector3 viewPointPosition, Vector3 viewPointForward, GameObject bullet)
+    public virtual void Shoot(Vector3 viewPointPosition, Vector3 viewPointForward)
     {
         // Apenas instancia gráfico
         if (Physics.Raycast(viewPointPosition, viewPointForward, out RaycastHit hit))
         {
-            GameObject bulletInstance = Instantiate(bullet, hit.point, Quaternion.identity);
-            Destroy(bulletInstance, 2f);
+            ShootGraphic(hit.point);
         }
 
         // Efetua cálculos no servidor
@@ -48,10 +51,24 @@ public class Gun : NetworkBehaviour
     {
         if (Physics.Raycast(viewPointPosition, viewPointForward, out RaycastHit hit))
         {
+            ShootGraphicClientRpc(hit.point);
+
             if (hit.collider.CompareTag("Enemy"))
             {
                 hit.collider.GetComponent<Health>().TakeDamage(ShotDamage);
             }
         }
+    }
+
+    private void ShootGraphic(Vector3 hitPoint)
+    {
+        GameObject bulletInstance = Instantiate(_bulletPrefab, hitPoint, Quaternion.identity);
+        Destroy(bulletInstance, 2f);
+    }
+
+    [ClientRpc]
+    private void ShootGraphicClientRpc(Vector3 hitPoint)
+    {
+        ShootGraphic(hitPoint);
     }
 }
