@@ -12,7 +12,8 @@ public class InputReader : ScriptableObject, IGameplayActions, IUIActions
     public event Action<Vector2> LookEvent;
     public event Action<bool> ShootEvent;
     public event Action<bool> JumpEvent;
-    public event Action ToggleInventoryEvent;
+    public event Action OpenMenuEvent;
+    public event Action CloseMenuEvent;
 
     private void OnEnable()
     {
@@ -58,8 +59,13 @@ public class InputReader : ScriptableObject, IGameplayActions, IUIActions
         }
     }
 
-    public void OnToggleInventory(InputAction.CallbackContext context)
+    public void OnOpenInventory(InputAction.CallbackContext context)
     {
-        if (context.performed) ToggleInventoryEvent?.Invoke();
+        if (context.performed) OpenMenuEvent?.Invoke();
+    }
+
+    public void OnCloseInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed) CloseMenuEvent?.Invoke();
     }
 }

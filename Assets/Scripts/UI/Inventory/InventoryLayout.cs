@@ -20,42 +20,41 @@ public class InventoryLayout : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        _inputReader.ToggleInventoryEvent += ToggleInventory;
+        _inputReader.OpenMenuEvent += OpenInventory;
+        _inputReader.CloseMenuEvent += CloseInventory;
     }
 
-    public void ToggleInventory()
+    private void OpenInventory()
+    {
+        if (!IsOwner) return;        
+
+        _content.SetActive(true);
+        foreach (InventoryContainerLayout containerLayout in _containers)
+        {
+            InventoryContainer container = _playerInventory.Containers.Find(container => container.Data.ItemCategory == containerLayout.ItemCategory);
+            if (container != null)
+            {
+                containerLayout.gameObject.SetActive(true);
+                containerLayout.Show(container, _itemLayoutPrefab);
+            }
+            else
+            {
+                containerLayout.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void CloseInventory()
     {
         if (!IsOwner) return;
 
-        _isInventoryOpen = !_isInventoryOpen;
-
-        if (_isInventoryOpen)
+        _content.SetActive(false);
+        foreach (InventoryContainerLayout containerLayout in _containers)
         {
-            _content.SetActive(true);
-            foreach (InventoryContainerLayout containerLayout in _containers)
+            if (containerLayout.gameObject.activeInHierarchy)
             {
-                InventoryContainer container = _playerInventory.Containers.Find(container => container.Data.ItemCategory == containerLayout.ItemCategory);
-                if (container != null)
-                {
-                    containerLayout.gameObject.SetActive(true);
-                    containerLayout.Show(container, _itemLayoutPrefab);
-                }
-                else
-                {
-                    containerLayout.gameObject.SetActive(false);
-                }
-            }
-        }
-        else
-        {
-            _content.SetActive(false);
-            foreach (InventoryContainerLayout containerLayout in _containers)
-            {
-                if (containerLayout.gameObject.activeInHierarchy)
-                {
-                    containerLayout.Clear();
-                    containerLayout.gameObject.SetActive(false);
-                }
+                containerLayout.Clear();
+                containerLayout.gameObject.SetActive(false);
             }
         }
     }

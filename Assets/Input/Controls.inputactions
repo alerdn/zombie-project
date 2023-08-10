@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleInventory",
+                    "name": "OpenInventory",
                     "type": "Button",
                     "id": "10c8a402-3047-4733-ae6e-de7fa165b8f3",
                     "expectedControlType": "Button",
@@ -147,7 +147,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "ToggleInventory",
+                    "action": "OpenInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -158,7 +158,7 @@
             "id": "29857b47-f43f-4456-8f38-65348dad0252",
             "actions": [
                 {
-                    "name": "ToggleInventory",
+                    "name": "CloseInventory",
                     "type": "Button",
                     "id": "94ee3034-1f52-4b11-9fbd-0ce5c43a8127",
                     "expectedControlType": "Button",
@@ -175,7 +175,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleInventory",
+                    "action": "CloseInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
