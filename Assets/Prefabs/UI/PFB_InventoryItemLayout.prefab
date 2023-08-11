@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 9022813799842339282}
   - component: {fileID: 6432791897772208737}
   - component: {fileID: 7891139544286948722}
+  - component: {fileID: 4199690212613064061}
   m_Layer: 5
   m_Name: PFB_InventoryItemLayout
   m_TagString: Untagged
@@ -393,3 +394,23 @@ MonoBehaviour:
   _sprite: {fileID: 3781048686912856644}
   _quantityBox: {fileID: 4709788262402568694}
   _quantity: {fileID: 8055223184647797111}
+--- !u!114 &4199690212613064061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493933657812621570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

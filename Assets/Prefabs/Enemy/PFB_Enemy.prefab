@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 3985836398220755991}
   - component: {fileID: 9032395116437437727}
   - component: {fileID: 5891888915166320103}
-  - component: {fileID: -4502346425886680879}
+  - component: {fileID: 2075784970454204808}
   m_Layer: 0
   m_Name: PFB_Enemy
   m_TagString: Untagged
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!114 &-4502346425886680879
+--- !u!114 &2075784970454204808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
