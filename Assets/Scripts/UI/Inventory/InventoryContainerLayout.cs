@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryContainerLayout : MonoBehaviour
 {
+    public event Action<ItemData> OnContextMenu;
+
     [field: SerializeField] public ItemCategory ItemCategory { get; private set; }
     [SerializeField] private Transform _itemsParent;
 
@@ -16,8 +19,9 @@ public class InventoryContainerLayout : MonoBehaviour
         foreach (InventoryItem item in container.Items)
         {
             InventoryItemLayout itemLayout = Instantiate(itemLayoutPrefab, _itemsParent);
-            itemLayout.Init(item.Data.Sprite, item.CurrentQuantity);
+            itemLayout.Init(item);
 
+            itemLayout.OnContextMenu += OnContextMenu;
             _items.Add(itemLayout);
         }
     }

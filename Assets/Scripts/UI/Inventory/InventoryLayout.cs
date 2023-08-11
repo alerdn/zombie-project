@@ -20,13 +20,30 @@ public class InventoryLayout : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        _containers.ForEach(container => container.OnContextMenu += OpenContextMenu);
+
         _inputReader.OpenMenuEvent += OpenInventory;
         _inputReader.CloseMenuEvent += CloseInventory;
     }
 
+    public override void OnNetworkDespawn()
+    {
+        if (!IsOwner) return;
+
+        _containers.ForEach(container => container.OnContextMenu -= OpenContextMenu);
+
+        _inputReader.OpenMenuEvent -= OpenInventory;
+        _inputReader.CloseMenuEvent -= CloseInventory;
+    }
+
+    private void OpenContextMenu(ItemData itemData)
+    {
+        Debug.Log($"Categoria: {itemData.ItemCategory} - Tipo: {itemData.ItemType}");
+    }
+
     private void OpenInventory()
     {
-        if (!IsOwner) return;        
+        if (!IsOwner) return;
 
         _content.SetActive(true);
         foreach (InventoryContainerLayout containerLayout in _containers)
