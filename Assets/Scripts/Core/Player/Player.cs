@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using TMPro;
 using Unity.Netcode;
+using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -43,6 +45,7 @@ namespace ZombieProject.Core
         private Vector2 _movementDirection;
         private Vector2 _mouseDirection;
         private bool _jump;
+        private bool _isRuning;
 
         [Header("Gun")]
         [SerializeField] private List<Gun> _allGuns;
@@ -66,6 +69,7 @@ namespace ZombieProject.Core
             _inputReader.LookEvent += HandleLookInput;
             _inputReader.ShootEvent += HandleShootInput;
             _inputReader.JumpEvent += HandleJumpInput;
+            _inputReader.RunEvent += HandleRunInput;
         }
 
         public override void OnNetworkDespawn()
@@ -91,6 +95,17 @@ namespace ZombieProject.Core
         {
             float forwardInput = _movementDirection.y;
             float strafeInput = _movementDirection.x;
+
+            if (_isRuning)
+            {
+                _fowardSpeed = 8f;
+                _strafeSpeed = 8f;
+            }
+            else
+            {
+                _fowardSpeed = 5f;
+                _strafeSpeed = 5f;
+            }
 
             _foward = forwardInput * _fowardSpeed * transform.forward;
             _strafe = strafeInput * _strafeSpeed * transform.right;
@@ -125,7 +140,7 @@ namespace ZombieProject.Core
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + _mouseInput.x, transform.rotation.eulerAngles.z);
 
             _verticalRotStore += _mouseInput.y;
-            _verticalRotStore = Mathf.Clamp(_verticalRotStore, -60f, 60f);
+            _verticalRotStore = Mathf.Clamp(_verticalRotStore, -50f, 60f);
 
             if (InvertLook) _viewPoint.rotation = Quaternion.Euler(_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
             else _viewPoint.rotation = Quaternion.Euler(-_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
@@ -149,6 +164,11 @@ namespace ZombieProject.Core
         private void HandleJumpInput(bool jump)
         {
             _jump = jump;
+        }
+
+        private void HandleRunInput(bool isRuning)
+        {
+            _isRuning = isRuning;
         }
     }
 }

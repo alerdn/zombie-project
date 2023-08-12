@@ -10,6 +10,7 @@ public class InputReader : ScriptableObject, IGameplayActions
     public event Action<Vector2> LookEvent;
     public event Action<bool> ShootEvent;
     public event Action<bool> JumpEvent;
+    public event Action<bool> RunEvent;
 
     private Controls _controls;
 
@@ -58,4 +59,15 @@ public class InputReader : ScriptableObject, IGameplayActions
         }
     }
 
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RunEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            RunEvent?.Invoke(false);
+        }
+    }
 }

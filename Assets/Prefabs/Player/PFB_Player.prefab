@@ -194,8 +194,6 @@ MonoBehaviour:
   InvertLook: 0
   _allGuns:
   - {fileID: 2899682397507533561}
-  _hitPrefab:
-    m_InternalValue: {fileID: 6751200271042001062, guid: 93949c2306c425744bdac1494688c666, type: 3}
 --- !u!114 &343950076338035438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +235,7 @@ Transform:
   m_GameObject: {fileID: 1543977220751321966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.333, z: -0.061}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -267,7 +265,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.01
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -723,7 +721,7 @@ Transform:
   m_GameObject: {fileID: 8215601879234155332}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.252, y: -0.504, z: -0.389}
+  m_LocalPosition: {x: 0.252, y: -0.504, z: -0.277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
