@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7f3dd9be12da346bb07f0e359458c4, type: 3}
-  m_Name: Soda Data
+  m_Script: {fileID: 11500000, guid: a5708156189428a48af5cda79b326ace, type: 3}
+  m_Name: Steak Heal Data
   m_EditorClassIdentifier: 
   ItemCategory: 3
-  ItemType: 2
+  ItemType: 3
+  Prefab: {fileID: 4435868278212863475, guid: 4825c03b9061fc34c9a15d3ed728086f, type: 3}
+  Name: Bife suculento
   Sprite: {fileID: 698845187, guid: 21cee89ef5c9faa4792c46da3c7f7878, type: 3}
-  IsStackable: 1
+  IsStackable: 0
+  HealAmount: 10

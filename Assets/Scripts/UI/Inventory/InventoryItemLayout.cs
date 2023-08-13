@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class InventoryItemLayout : MonoBehaviour, IPointerClickHandler
 {
-    public event Action<ItemData> OnContextMenu;
+    public event Action<ItemData, Vector3> OnContextMenu;
 
     [SerializeField] private Image _sprite;
     [SerializeField] private GameObject _quantityBox;
@@ -36,12 +36,12 @@ public class InventoryItemLayout : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            OpenContextMenu();
+            OpenContextMenu(eventData.position);
         }
     }
 
-    private void OpenContextMenu()
+    private void OpenContextMenu(Vector3 position)
     {
-        OnContextMenu?.Invoke(_itemData);
+        OnContextMenu?.Invoke(_itemData, position);
     }
 }

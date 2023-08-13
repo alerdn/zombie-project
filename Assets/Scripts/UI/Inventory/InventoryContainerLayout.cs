@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InventoryContainerLayout : MonoBehaviour
 {
-    public event Action<ItemData> OnContextMenu;
+    public event Action<ItemData, Vector3> OnContextMenu;
 
     [field: SerializeField] public ItemCategory ItemCategory { get; private set; }
     [SerializeField] private Transform _itemsParent;

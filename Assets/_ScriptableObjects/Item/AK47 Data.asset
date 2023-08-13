@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemCategory: 0
   ItemType: 0
+  Prefab: {fileID: 9039418949811619548, guid: 4bc0b57d1a31e9040b85a97e8284ff68, type: 3}
+  Name: AK 47
   Sprite: {fileID: -502254900, guid: 21cee89ef5c9faa4792c46da3c7f7878, type: 3}
   IsStackable: 0

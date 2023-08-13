@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemCategory: 2
   ItemType: 1
+  Name: Knife
   Sprite: {fileID: 0}
   IsStackable: 0
