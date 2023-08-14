@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ZombieProject.Core
 {
@@ -49,7 +50,6 @@ namespace ZombieProject.Core
 
         [Header("Gun")]
         [SerializeField] private List<Gun> _allGuns;
-
         private int _currentGun;
 
         public override void OnNetworkSpawn()
@@ -81,6 +81,7 @@ namespace ZombieProject.Core
             _inputReader.LookEvent -= HandleLookInput;
             _inputReader.ShootEvent -= HandleShootInput;
             _inputReader.JumpEvent -= HandleJumpInput;
+            _inputReader.RunEvent -= HandleRunInput;
         }
 
         private void Update()
