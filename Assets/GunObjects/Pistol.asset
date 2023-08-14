@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e9f8552aa45254e94200cce62b5284, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  Crosshair: {fileID: 0}
+  IsAutomatic: 0
+  HasCrosshair: 1
+  TimeBetweenShot: 0.5
+  AdsZoom: 60
+  Ammo: 0
+  TotalAmmo: 12
+  ShotDamage: 100
+  Bullet: {fileID: 6751200271042001062, guid: 93949c2306c425744bdac1494688c666, type: 3}

@@ -12,6 +12,9 @@ public class InputReader : ScriptableObject, IGameplayActions, IUIActions
     public event Action<Vector2> LookEvent;
     public event Action<bool> ShootEvent;
     public event Action<bool> JumpEvent;
+    public event Action<bool> RunEvent;
+
+    private Controls _controls;
     public event Action OpenMenuEvent;
     public event Action CloseMenuEvent;
 
@@ -59,6 +62,17 @@ public class InputReader : ScriptableObject, IGameplayActions, IUIActions
         }
     }
 
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RunEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            RunEvent?.Invoke(false);
+        }
+    }
     public void OnOpenInventory(InputAction.CallbackContext context)
     {
         if (context.performed) OpenMenuEvent?.Invoke();

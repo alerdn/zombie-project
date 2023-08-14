@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using TMPro;
 using Unity.Netcode;
+using UnityEditor.XR;
 using UnityEngine;
 
 namespace ZombieProject.Core
@@ -36,12 +39,18 @@ namespace ZombieProject.Core
         [SerializeField] private Vector2 _mouseInput;
         [SerializeField] private float _mouseSensitivity = 1f;
         [SerializeField] private float _verticalRotStore;
-        [SerializeField] private Camera _cam;
+        [SerializeField] private CinemachineVirtualCamera _vcam;
         [SerializeField] private bool InvertLook = false;
 
         private Vector2 _movementDirection;
         private Vector2 _mouseDirection;
         private bool _jump;
+        private bool _isRuning;
+
+        [Header("Gun")]
+        [SerializeField] private List<Gun> _allGuns;
+
+        private int _currentGun;
 
         public override void OnNetworkSpawn()
         {
@@ -52,15 +61,16 @@ namespace ZombieProject.Core
             _characterController = GetComponent<CharacterController>();
             InventoryComponent = GetComponent<PlayerInventory>();
 
-            _cam = Camera.main;
+            _vcam.Priority = 15;
 
             _gravity = (-2 * _jumpMaxHeight) / (_timeToMaxHeight * _timeToMaxHeight);
             _jumpSpeed = (2 * _jumpMaxHeight) / _timeToMaxHeight;
 
             _inputReader.MovementEvent += HandleMovementInputs;
             _inputReader.LookEvent += HandleLookInput;
-            _inputReader.ShootEvent += HandleShootInputServerRpc;
+            _inputReader.ShootEvent += HandleShootInput;
             _inputReader.JumpEvent += HandleJumpInput;
+            _inputReader.RunEvent += HandleRunInput;
         }
 
         public override void OnNetworkDespawn()
@@ -69,7 +79,7 @@ namespace ZombieProject.Core
 
             _inputReader.MovementEvent -= HandleMovementInputs;
             _inputReader.LookEvent -= HandleLookInput;
-            _inputReader.ShootEvent -= HandleShootInputServerRpc;
+            _inputReader.ShootEvent -= HandleShootInput;
             _inputReader.JumpEvent -= HandleJumpInput;
         }
 
@@ -82,19 +92,21 @@ namespace ZombieProject.Core
             HandleVision();
         }
 
-        private void LateUpdate()
-        {
-            if (!IsOwner) return;
-
-            if (_cam == null) _cam = Camera.main;
-
-            _cam.transform.SetPositionAndRotation(_viewPoint.position, _viewPoint.rotation);
-        }
-
         private void HandleMovement()
         {
             float forwardInput = _movementDirection.y;
             float strafeInput = _movementDirection.x;
+
+            if (_isRuning)
+            {
+                _fowardSpeed = 8f;
+                _strafeSpeed = 8f;
+            }
+            else
+            {
+                _fowardSpeed = 5f;
+                _strafeSpeed = 5f;
+            }
 
             _foward = forwardInput * _fowardSpeed * transform.forward;
             _strafe = strafeInput * _strafeSpeed * transform.right;
@@ -129,7 +141,7 @@ namespace ZombieProject.Core
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + _mouseInput.x, transform.rotation.eulerAngles.z);
 
             _verticalRotStore += _mouseInput.y;
-            _verticalRotStore = Mathf.Clamp(_verticalRotStore, -60f, 60f);
+            _verticalRotStore = Mathf.Clamp(_verticalRotStore, -50f, 60f);
 
             if (InvertLook) _viewPoint.rotation = Quaternion.Euler(_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
             else _viewPoint.rotation = Quaternion.Euler(-_verticalRotStore, _viewPoint.rotation.eulerAngles.y, _viewPoint.rotation.eulerAngles.z);
@@ -145,15 +157,19 @@ namespace ZombieProject.Core
             _mouseDirection = direction;
         }
 
-        [ServerRpc]
-        private void HandleShootInputServerRpc(bool isShooting)
+        private void HandleShootInput(bool isShooting)
         {
-            IsShooting.Value = isShooting;
+            _allGuns[_currentGun].Shoot(_viewPoint.position, _viewPoint.forward);
         }
 
         private void HandleJumpInput(bool jump)
         {
             _jump = jump;
+        }
+
+        private void HandleRunInput(bool isRuning)
+        {
+            _isRuning = isRuning;
         }
     }
 }

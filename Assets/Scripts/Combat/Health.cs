@@ -6,10 +6,12 @@ using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
-    public event Action<Health> OnDie;
+    //public event Action<Health> OnDie;
+
+    [SerializeField] private GameObject _deatheEffect;
 
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
-    public NetworkVariable<int> CurrentHealth = new NetworkVariable<int>();
+    public int _currentHealth;
 
     private bool _isDead;
 
@@ -17,30 +19,48 @@ public class Health : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        CurrentHealth.Value = MaxHealth;
+        _currentHealth = MaxHealth;
     }
 
     public void TakeDamage(int damageValue)
     {
-        ModifyHealth(-damageValue);
+        ModifyHealthServerRpc(-damageValue);
     }
 
     public void RestoreHealth(int healValue)
     {
-        ModifyHealth(healValue);
+        ModifyHealthServerRpc(healValue);
     }
 
-    private void ModifyHealth(int value)
+    [ServerRpc]
+    private void ModifyHealthServerRpc(int value)
     {
         if (_isDead) return;
 
-        int newHealth = CurrentHealth.Value + value;
-        CurrentHealth.Value = Mathf.Clamp(newHealth, 0, MaxHealth);
+        int newHealth = _currentHealth + value;
+        _currentHealth = Mathf.Clamp(newHealth, 0, MaxHealth);
+        SetHealthClientRpc(_currentHealth);
 
-        if (CurrentHealth.Value == 0)
+        if (_currentHealth == 0)
         {
-            OnDie?.Invoke(this);
             _isDead = true;
+            KillClientRpc();
+            Destroy(gameObject);
         }
+    }
+
+    // Deixar que o servidor calcule a nova health e os clientes apenas settem
+    [ClientRpc]
+    private void SetHealthClientRpc(int currentHealth)
+    {
+        _currentHealth = currentHealth;
+    }
+
+    // Apenas o servidor pode dizer ao client se alguém morreu
+    [ClientRpc]
+    private void KillClientRpc()
+    {
+        Instantiate(_deatheEffect, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
