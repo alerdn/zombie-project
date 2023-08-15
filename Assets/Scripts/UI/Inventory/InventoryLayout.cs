@@ -5,6 +5,7 @@ using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using ZombieProject.Core;
 using Random = UnityEngine.Random;
 
 public class InventoryLayout : NetworkBehaviour, IPointerClickHandler
@@ -13,15 +14,13 @@ public class InventoryLayout : NetworkBehaviour, IPointerClickHandler
 
     [Header("Setup")]
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private PlayerInventory _playerInventory;
+    [SerializeField] private Player _player;
     [SerializeField] private InventoryContextMenu _contextMenu;
 
     [Header("Containers")]
     [SerializeField] private GameObject _content;
     [SerializeField] private InventoryItemLayout _itemLayoutPrefab;
     [SerializeField] private List<InventoryContainerLayout> _containers;
-
-    private bool _isInventoryOpen;
 
     public override void OnNetworkSpawn()
     {
@@ -58,11 +57,8 @@ public class InventoryLayout : NetworkBehaviour, IPointerClickHandler
 
     private void DropItem(ItemData data)
     {
-        Vector2 playerPosition = new Vector2(_playerInventory.transform.position.x, _playerInventory.transform.position.z);
-        Vector2 dropPosition = playerPosition + Random.insideUnitCircle * 5f;
-
-        Vector3 dropConvertedPosition = new Vector3(dropPosition.x, _playerInventory.transform.position.y, dropPosition.y);
-        Instantiate(data.Prefab, dropConvertedPosition, Quaternion.identity);
+        Vector3 dropPosition = _player.transform.position + _player.transform.forward * 5f;
+        GameObject itemDropped = Instantiate(data.Prefab, dropPosition, Quaternion.identity);
     }
 
     #endregion
@@ -90,7 +86,7 @@ public class InventoryLayout : NetworkBehaviour, IPointerClickHandler
         _content.SetActive(true);
         foreach (InventoryContainerLayout containerLayout in _containers)
         {
-            InventoryContainer container = _playerInventory.Containers.Find(container => container.Data.ItemCategory == containerLayout.ItemCategory);
+            InventoryContainer container = _player.InventoryComponent.Containers.Find(container => container.Data.ItemCategory == containerLayout.ItemCategory);
             if (container != null)
             {
                 containerLayout.gameObject.SetActive(true);
