@@ -173,6 +173,7 @@ MonoBehaviour:
   IsShooting:
     m_InternalValue: 0
   _inputReader: {fileID: 11400000, guid: b729e0675022bea42ba55ef84391998f, type: 2}
+  _playerCanvas: {fileID: 824961360103520667}
   _characterController: {fileID: 6651629513263876289}
   _foward: {x: 0, y: 0, z: 0}
   _strafe: {x: 0, y: 0, z: 0}
@@ -194,6 +195,7 @@ MonoBehaviour:
   _verticalRotStore: 0
   _vcam: {fileID: 1317744677269339889}
   InvertLook: 0
+  _stammina: {fileID: 5717686387697284754}
   _allGuns:
   - {fileID: 2899682397507533561}
 --- !u!114 &343950076338035438
@@ -210,7 +212,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deatheEffect: {fileID: 7141676911629108955, guid: 4f673b53cddbf834caed806cef35e70d, type: 3}
   <MaxHealth>k__BackingField: 100
-  _currentHealth: 0
 --- !u!1 &287360585438092401
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +563,6 @@ GameObject:
   - component: {fileID: 103828792196499947}
   - component: {fileID: 7114044849053639093}
   - component: {fileID: 1608905127505069535}
-  - component: {fileID: 1784413640998518806}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -635,27 +635,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1784413640998518806
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2583798824297111968}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3052404113552008335
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +838,7 @@ GameObject:
   - component: {fileID: 8901642511359369290}
   - component: {fileID: 60534217756230956}
   - component: {fileID: 4706204946586509962}
+  - component: {fileID: 4776639637885558884}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -924,6 +904,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4776639637885558884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4862547643391868520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97f7dfb1d131ba4eaf9bb33dfb28214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 343950076338035438}
+  _healthImage: {fileID: 4706204946586509962}
 --- !u!1 &5300641802806221527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1685,7 +1679,7 @@ GameObject:
   - component: {fileID: 3967565509888414394}
   - component: {fileID: 5717686387697284754}
   m_Layer: 5
-  m_Name: HistamineBar
+  m_Name: Stammina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1762,7 +1756,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: b729e0675022bea42ba55ef84391998f, type: 2}
-  _histamineImage: {fileID: 3967565509888414394}
+  _StamminaImage: {fileID: 3967565509888414394}
+  _timeToReplenish: 500
 --- !u!1 &8604164443378816298
 GameObject:
   m_ObjectHideFlags: 0

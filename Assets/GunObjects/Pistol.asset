@@ -19,5 +19,5 @@ MonoBehaviour:
   AdsZoom: 60
   Ammo: 0
   TotalAmmo: 12
-  ShotDamage: 100
+  ShotDamage: 10
   Bullet: {fileID: 6751200271042001062, guid: 93949c2306c425744bdac1494688c666, type: 3}

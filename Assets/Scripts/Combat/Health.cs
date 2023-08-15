@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
-    //public event Action<Health> OnDie;
+    public event Action<int> OnHit;
 
     [SerializeField] private GameObject _deatheEffect;
 
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
-    public int _currentHealth;
+    public int CurrentHealth { get; private set; }
 
     private bool _isDead;
 
@@ -19,7 +19,7 @@ public class Health : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        _currentHealth = MaxHealth;
+        CurrentHealth = MaxHealth;
     }
 
     public void TakeDamage(int damageValue)
@@ -32,16 +32,16 @@ public class Health : NetworkBehaviour
         ModifyHealthServerRpc(healValue);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void ModifyHealthServerRpc(int value)
     {
         if (_isDead) return;
 
-        int newHealth = _currentHealth + value;
-        _currentHealth = Mathf.Clamp(newHealth, 0, MaxHealth);
-        SetHealthClientRpc(_currentHealth);
+        int newHealth = CurrentHealth + value;
+        CurrentHealth = Mathf.Clamp(newHealth, 0, MaxHealth);
+        SetHealthClientRpc(CurrentHealth);
 
-        if (_currentHealth == 0)
+        if (CurrentHealth == 0)
         {
             _isDead = true;
             KillClientRpc();
@@ -53,7 +53,8 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     private void SetHealthClientRpc(int currentHealth)
     {
-        _currentHealth = currentHealth;
+        CurrentHealth = currentHealth;
+        OnHit?.Invoke(CurrentHealth);
     }
 
     // Apenas o servidor pode dizer ao client se alguém morreu

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using TMPro;
 using Unity.Netcode;
-using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +16,9 @@ namespace ZombieProject.Core
 
         [Header("Input")]
         [SerializeField] private InputReader _inputReader;
+
+        [Header("Canvas")]
+        [SerializeField] private Canvas _playerCanvas;
 
         [Header("Movement")]
         [SerializeField] private CharacterController _characterController;
@@ -48,6 +50,10 @@ namespace ZombieProject.Core
         private bool _jump;
         private bool _isRuning;
 
+        [Header("Survival")]
+        [SerializeField] private Stammina _stammina;
+        private bool _hasShiftUp = false;
+
         [Header("Gun")]
         [SerializeField] private List<Gun> _allGuns;
         private int _currentGun;
@@ -55,6 +61,8 @@ namespace ZombieProject.Core
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
+
+            _playerCanvas.gameObject.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -91,6 +99,7 @@ namespace ZombieProject.Core
             HandleMovement();
             HandleJump();
             HandleVision();
+            HandleRun();
         }
 
         private void HandleMovement()
@@ -160,6 +169,10 @@ namespace ZombieProject.Core
 
         private void HandleShootInput(bool isShooting)
         {
+            if (!_allGuns[_currentGun].IsAutomatic)
+            {
+                if (!isShooting) return;
+            }
             _allGuns[_currentGun].Shoot(_viewPoint.position, _viewPoint.forward);
         }
 
@@ -170,7 +183,17 @@ namespace ZombieProject.Core
 
         private void HandleRunInput(bool isRuning)
         {
+            _hasShiftUp = !isRuning;
+
+            if (!_stammina.HasStammina) return;
             _isRuning = isRuning;
+        }
+
+        private void HandleRun()
+        {
+            if (!_stammina.HasStammina || _movementDirection == Vector2.zero) _isRuning = false;
+
+            _stammina.HandleStammina(_isRuning, _hasShiftUp);
         }
     }
 }
