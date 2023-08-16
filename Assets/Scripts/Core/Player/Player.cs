@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ZombieProject.Core
 {
@@ -48,7 +44,7 @@ namespace ZombieProject.Core
         private bool _isRuning;
 
         [Header("Survival")]
-        [SerializeField] private PlayerUIReferences _playerUI;
+        [SerializeField] private SurvivalAttributes _playerUI;
         private bool _hasShiftUp = false;
 
         [Header("Gun")]

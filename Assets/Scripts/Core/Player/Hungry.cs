@@ -1,30 +1,26 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Hungry : MonoBehaviour
 {
+    public event Action<float> OnHungry;
+
     [SerializeField] private Image _hungryBar;
     [SerializeField] private float _timeToHandleBar = 1000f; //milisegundos
     [SerializeField] private float _hungryDamage = .1f;
-    private float _currentHungry;
+    public float CurrentHungry;
     private float _maxEat = 1f;
     private Coroutine _scoroutine;
     private Coroutine _rcoroutine;
 
-    private PlayerUIReferences _playerUIReferences;
-
     private void Start()
     {
-        _currentHungry = _maxEat;
-        _hungryBar.fillAmount = _currentHungry;
+        CurrentHungry = _maxEat;
+        _hungryBar.fillAmount = CurrentHungry;
 
         _scoroutine = StartCoroutine(SpendHungry());
-
-        _playerUIReferences = GetComponentInParent<PlayerUIReferences>();
     }
 
     private IEnumerator SpendHungry()
@@ -38,16 +34,16 @@ public class Hungry : MonoBehaviour
         float time = 0;
         float startHitValue = _maxEat / 2;
 
-        while (_currentHungry > 0f)
+        while (CurrentHungry > 0f)
         {
-            if (_currentHungry < startHitValue)
+            if (CurrentHungry < startHitValue)
             {
-                _playerUIReferences.VisualHealth.Health.TakeDamage(_hungryDamage);
+                OnHungry?.Invoke(_hungryDamage);
             }
 
             time = Time.deltaTime;
-            _currentHungry -= time / _timeToHandleBar;
-            _hungryBar.fillAmount = _currentHungry;
+            CurrentHungry -= time / _timeToHandleBar;
+            _hungryBar.fillAmount = CurrentHungry;
 
             yield return new WaitForEndOfFrame();
         }
@@ -63,12 +59,12 @@ public class Hungry : MonoBehaviour
             _scoroutine = null;
         }
 
-        float hungry = _currentHungry;
+        float hungry = CurrentHungry;
         float time = 0;
 
-        _currentHungry += eatValue / 100f;
+        CurrentHungry += eatValue / 100f;
 
-        while (hungry < _currentHungry)
+        while (hungry < CurrentHungry)
         {
             time += Time.deltaTime;
             hungry += time / _timeToHandleBar;
@@ -84,9 +80,9 @@ public class Hungry : MonoBehaviour
 
     public IEnumerator CallReplenishHungry(int eatValue)
     {
-        if (_currentHungry >= _maxEat)
+        if (CurrentHungry >= _maxEat)
         {
-            _currentHungry = _maxEat;
+            CurrentHungry = _maxEat;
             yield break;
         }
         if (_rcoroutine != null) yield return new WaitUntil(() => _rcoroutine != null);

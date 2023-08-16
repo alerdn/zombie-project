@@ -1,12 +1,12 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Thirst : MonoBehaviour
 {
+    public event Action<float> OnThirst;
+
     [SerializeField] private Image _thirstBar;
     [field: SerializeField] public float TimeToHandleBar = 1000f; //milisegundos
     [SerializeField] private float _thirstDamage = .1f;
@@ -17,8 +17,6 @@ public class Thirst : MonoBehaviour
 
     private float _defaultTimeToHandleBar = 1000f;
 
-    private PlayerUIReferences _playerUIReferences;
-
     private void Start()
     {
         _currentThirst = _maxDrink;
@@ -27,13 +25,11 @@ public class Thirst : MonoBehaviour
         _scoroutine = StartCoroutine(SpendThirst());
 
         _defaultTimeToHandleBar = TimeToHandleBar;
-
-        _playerUIReferences = GetComponentInParent<PlayerUIReferences>();
     }
 
     private IEnumerator SpendThirst()
     {
-        if (TimeToHandleBar != _defaultTimeToHandleBar) TimeToHandleBar = _defaultTimeToHandleBar; 
+        if (TimeToHandleBar != _defaultTimeToHandleBar) TimeToHandleBar = _defaultTimeToHandleBar;
 
         if (_rcoroutine != null)
         {
@@ -48,7 +44,7 @@ public class Thirst : MonoBehaviour
         {
             if (_currentThirst < startHitValue)
             {
-                _playerUIReferences.VisualHealth.Health.TakeDamage(_thirstDamage);
+                OnThirst?.Invoke(_thirstDamage);
             }
 
             time = Time.deltaTime;
