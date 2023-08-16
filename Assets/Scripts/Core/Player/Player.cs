@@ -17,9 +17,6 @@ namespace ZombieProject.Core
         [Header("Input")]
         [SerializeField] private InputReader _inputReader;
 
-        [Header("Canvas")]
-        [SerializeField] private Canvas _playerCanvas;
-
         [Header("Movement")]
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private Vector3 _foward;
@@ -51,7 +48,7 @@ namespace ZombieProject.Core
         private bool _isRuning;
 
         [Header("Survival")]
-        [SerializeField] private Stammina _stammina;
+        [SerializeField] private PlayerUIReferences _playerUI;
         private bool _hasShiftUp = false;
 
         [Header("Gun")]
@@ -62,7 +59,7 @@ namespace ZombieProject.Core
         {
             if (!IsOwner) return;
 
-            _playerCanvas.gameObject.SetActive(true);
+            _playerUI.gameObject.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -184,16 +181,21 @@ namespace ZombieProject.Core
         private void HandleRunInput(bool isRuning)
         {
             _hasShiftUp = !isRuning;
-
-            if (!_stammina.HasStammina) return;
+            if (!_hasShiftUp) Eat();
+            if (!_playerUI.Stammina.HasStammina) return;
             _isRuning = isRuning;
         }
 
         private void HandleRun()
         {
-            if (!_stammina.HasStammina || _movementDirection == Vector2.zero) _isRuning = false;
+            if (!_playerUI.Stammina.HasStammina || _movementDirection == Vector2.zero) _isRuning = false;
 
-            _stammina.HandleStammina(_isRuning, _hasShiftUp);
+            _playerUI.Stammina.HandleStammina(_isRuning, _hasShiftUp);
+        }
+
+        private void Eat()
+        {
+            StartCoroutine(_playerUI.Hungry.ReplenishHungry(50));
         }
     }
 }

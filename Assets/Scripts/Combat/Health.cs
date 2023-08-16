@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
-    public event Action<int> OnHit;
+    public event Action<float> OnHit;
 
     [SerializeField] private GameObject _deatheEffect;
 
-    [field: SerializeField] public int MaxHealth { get; private set; } = 100;
-    public int CurrentHealth { get; private set; }
+    [field: SerializeField] public float MaxHealth { get; private set; } = 100;
+    public float CurrentHealth { get; private set; }
 
     private bool _isDead;
 
@@ -22,23 +22,23 @@ public class Health : NetworkBehaviour
         CurrentHealth = MaxHealth;
     }
 
-    public void TakeDamage(int damageValue)
+    public void TakeDamage(float damageValue)
     {
         ModifyHealthServerRpc(-damageValue);
     }
 
-    public void RestoreHealth(int healValue)
+    public void RestoreHealth(float healValue)
     {
         ModifyHealthServerRpc(healValue);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ModifyHealthServerRpc(int value)
+    private void ModifyHealthServerRpc(float value)
     {
         if (_isDead) return;
 
-        int newHealth = CurrentHealth + value;
-        CurrentHealth = Mathf.Clamp(newHealth, 0, MaxHealth);
+        float newHealth = CurrentHealth + value;
+        CurrentHealth = Mathf.Clamp(newHealth, 0f, MaxHealth);
         SetHealthClientRpc(CurrentHealth);
 
         if (CurrentHealth == 0)
@@ -51,7 +51,7 @@ public class Health : NetworkBehaviour
 
     // Deixar que o servidor calcule a nova health e os clientes apenas settem
     [ClientRpc]
-    private void SetHealthClientRpc(int currentHealth)
+    private void SetHealthClientRpc(float currentHealth)
     {
         CurrentHealth = currentHealth;
         OnHit?.Invoke(CurrentHealth);

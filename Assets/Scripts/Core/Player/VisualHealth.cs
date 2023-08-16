@@ -5,23 +5,23 @@ using UnityEngine.UI;
 
 public class VisualHealth : MonoBehaviour
 {
-    [SerializeField] private Health _health;
+    [field: SerializeField] public Health Health { get; private set; }
+
     [SerializeField] private Image _healthImage;
 
     private void Start()
     {
-        _health.OnHit += ChangeHealthUI;
+        Health.OnHit += ChangeHealthUI;
     }
 
-    public void ChangeHealthUI(int health)
+    public void ChangeHealthUI(float health)
     {
-        float healthValue = (float)health / 100f;
-        Debug.Log(healthValue);
+        float healthValue = health / 100f;
         _healthImage.fillAmount = healthValue;
     }
 
     private void OnDestroy()
     {
-        _health.OnHit -= ChangeHealthUI;
+        Health.OnHit -= ChangeHealthUI;
     }
 }
