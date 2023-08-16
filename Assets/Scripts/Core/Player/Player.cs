@@ -181,7 +181,9 @@ namespace ZombieProject.Core
         private void HandleRunInput(bool isRuning)
         {
             _hasShiftUp = !isRuning;
-            if (!_hasShiftUp) Eat();
+
+            if (isRuning) _playerUI.Thirst.TimeToHandleBar /= 2;
+
             if (!_playerUI.Stammina.HasStammina) return;
             _isRuning = isRuning;
         }
@@ -193,9 +195,14 @@ namespace ZombieProject.Core
             _playerUI.Stammina.HandleStammina(_isRuning, _hasShiftUp);
         }
 
-        private void Eat()
+        private void Eat(int eatValue)
         {
-            StartCoroutine(_playerUI.Hungry.ReplenishHungry(50));
+            StartCoroutine(_playerUI.Hungry.CallReplenishHungry(eatValue));
+        }
+
+        private void Drink(int drinkValue)
+        {
+            StartCoroutine(_playerUI.Thirst.CallReplenishThirst(drinkValue));
         }
     }
 }

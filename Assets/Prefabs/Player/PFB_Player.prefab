@@ -753,6 +753,7 @@ MonoBehaviour:
   VisualHealth: {fileID: 4776639637885558884}
   Stammina: {fileID: 5717686387697284754}
   Hungry: {fileID: 7876767764023043836}
+  Thirst: {fileID: 561480112156186671}
 --- !u!1 &4767621685577693627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1127,7 @@ GameObject:
   - component: {fileID: 6236316671271828210}
   - component: {fileID: 7439373756296663555}
   - component: {fileID: 2708003019983795356}
+  - component: {fileID: 561480112156186671}
   m_Layer: 5
   m_Name: WaterBar
   m_TagString: Untagged
@@ -1191,6 +1193,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &561480112156186671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065633669091172854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1346c8eab83099948881f90f4dd14279, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _thirstBar: {fileID: 2708003019983795356}
+  TimeToHandleBar: 1000
+  _thirstDamage: 0.1
 --- !u!1 &6516664004680494773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,7 +1605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hungryBar: {fileID: 8746751014504373319}
-  _timeToReplenish: 1000
+  _timeToHandleBar: 1000
   _hungryDamage: 0.01
 --- !u!1 &7641093010026121397
 GameObject:
